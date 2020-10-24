@@ -1,0 +1,405 @@
+---
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+    css: ["../../css/custom.css"]
+  pdf_document: default
+  md_document: default
+---
+
+## Last week
+
+- What is R?
+- What is RStudio?
+- Packages
+- Variables and data types
+
+
+---
+
+## This week
+
+
+--
+
+- Data structures
+  + Vectors
+  + Lists
+  + Dataframes
+  
+--
+
+- Functions
+  + What is a function?
+  + How to use a function
+
+---
+
+## Data structures
+
+- Values in R need to be stored in a specific way
+- There are 4 main data structures in R:
+
+---
+
+## Data structures - Vectors
+
+- Vectors
+
+--
+
+  + Vectors in R are arrays of data in one dimension
+
+--
+
+  + They are atomic (not recursive)*, but can have named values
+
+--
+
+  + Even variables with a single value will be stored as a vector with length 1
+
+--
+
+
+```{r data_structures_vectors, echo = TRUE}
+
+vector_1 <- c(1,2,3,4,5,6)
+vector_1
+
+vector_2 <- c("first_value" = 1)
+vector_2
+```
+
+- *More on the difference between atomic and recursive later
+---
+
+## Data structures - Data frames
+
+- Data frames
+  +  Most data you'll be working with in R will be held in a data frame
+  
+--
+  
+  +  Data frames are two dimensional arrays that can hold values of different types and have named columns and rows
+
+--
+
+```{r data_structures_dataframes, echo = TRUE}
+dataframe1 <- data.frame(numeric_col = c(1,2),
+                         character_col = c("hello", "world"),
+                         stringsAsFactors = FALSE)
+dataframe1
+```
+
+- Important notes:
+
+--
+
+  + Values in the same column must be of the same type
+
+--
+
+  + Each column must have the same number of rows
+
+---
+
+## Data structures - Lists
+
+- Lists
+  + Lists are similar to vectors in that they can contain multiple named values
+
+--
+
+  + However, lists can contain values of any type, including other lists
+
+--
+
+  + This means you can have a list of data frames, or a list of lists of data frames!
+  
+--
+
+```{r data_structures_lists_1, echo = TRUE}
+
+list_1 <- list(numbers = c(1,2,3,4),
+               characters = (c("hello", "world"))
+)
+list_1
+
+```
+
+---
+
+## Data structures - Lists
+
+- Due to this difference between lists and vectors, we refer to a list as being *recursive* and vectors as *atomic*
+
+--
+
+- Atomic
+  + "of or forming a single irreducible unit or component in a larger system."
+    
+--
+
+  + Cannot hold objects of their own type (i.e. you can't have a vector object in a vector)
+  
+--
+  
+- Recursive
+  + "characterized by recurrence or repetition."
+  
+--
+
+  + Can hold objects of their own type (i.e you can have a list, in a list, in a list...)
+  
+---
+
+## Lists vs vectors
+
+``` {r, echo = TRUE}
+vector_example <- c(1,2,3)
+list_example <- list(first_vector = c(1,2,3),
+                     first_list = list(1,2,3))
+vector_example
+list_example
+```
+
+---
+
+## Data structures - Matrices
+
+- Matrices
+
+--
+
+  + Matrices are two-dimensional arrays that hold values of the same type
+  
+--
+
+  + Matrices can have named rows or columns, but they cannot be subsetted by those names (more later on)
+  
+--
+
+```{r data_structures_matrices, echo = TRUE}
+
+matrix_1 <- matrix(c(1,2, 3,4), nrow = 2, ncol = 2)
+print(matrix_1)
+
+```
+
+---
+
+## Subsetting data structures
+
+- Most of the time you won't want all of the values in a data structure. For instance, usually you'll only want a column or two from a dataframe
+
+--
+
+- We call the process of extracting particular values from a data strucuture subsetting
+
+--
+
+- We're going to look very briefly at how to subset vectors, lists and dataframes, but this is covered in more detail in the book
+
+--- 
+
+## Subsetting lists and vectors
+
+
+- To subset a list or vector, we use `[]` brackets
+
+- In the brackets, we give the locations (indexes) of the values we want
+
+--
+
+Example:
+
+```{r, echo = TRUE}
+
+c(1,2,3)[1]
+list(c(1,2,3), c(1,2,3))[1]
+```
+
+---
+
+## Subsetting lists
+
+- When subsetting lists, there is a difference between subsetting with `[]` and `[[]]`
+
+
+--
+
+- `[]`
+  + Returns a list
+  + Accepts more than one value
+
+--
+
+- `[[]]`
+  + Returns a single object
+  + Only accepts one value
+
+---
+
+## Example
+
+```{r}
+test_list <- list(first_value = c(1,2,3),
+                  second_value = c(100,200,300))
+test_list[1]
+test_list[[2]]
+```
+
+---
+
+## Subsetting lists and dataframes
+
+- You can subset dataframes and lists (if they have named values) using `$`
+
+--
+
+```{r}
+test_list$first_value
+dataframe1$numeric_col
+```
+--
+
+- For the list, this returns the item with that name
+
+- For the dataframe, it returns the column
+
+---
+
+## Functions
+
+- Any operation, such as loading a dataset or finding the mean, is performed via a function in R
+
+--
+
+- A function is a set of steps that takes an input, does some form of computation, and returns an output
+
+--
+
+- For example, the mean function takes values and returns the mean of those values
+
+--
+
+```{r functions_1, echo = TRUE}
+values <- c(10,20,30)
+mean(values)
+
+```
+
+--
+
+- You may have noticed that `c()` also acts as a function, creating a vector with the provided values
+
+---
+
+## Functions - input parameters/arguments
+
+- Almost all functions will require some input to produce an output
+
+--
+
+- These are the function's input parameters or arguments
+
+--
+
+- For example, in the previous slide, the mean() function required a vector of values to calculate the mean
+
+---
+
+## Functions - input parameters/arguments
+
+- Some functions will have optional input parameters
+
+--
+
+- To see what arguments/parameters a function requires, type the function name preceded by a "?" in the R console (e.g. `?mean`)
+
+---
+
+## Functions - exercise
+
+- Find the help page for the `sample()` function
+
+--
+
+- Use the `sample()` function
+
+---
+
+## Functions - naming input parameters
+
+- When you provide unnamed values to a function, R will automatically assign them to an input argument in the order they appear on the function's help page
+
+--
+
+- This can be hard to keep track of if you're providing multiple arguments
+
+--
+
+- Best practice, therefore, is to be explicit when providing your input arguments
+
+--
+
+- Let's use the `substr()` function as an example
+
+---
+
+## Functions - naming input parameters
+
+
+- The `substr()` function returns part of a string from a start and stop index
+
+--
+
+```{r function_naming_input_parameters_1, echo = TRUE}
+string1 <- "hello world"
+substr(string1, 1,5)
+```
+
+- The `substr()` function expects 3 arguments;
+
+--
+
+- The string (x)
+
+--
+
+- The start point (start)
+
+--
+
+- The end point (stop)
+
+--
+
+- As shown above, we can just pass those arguments without naming them, in that order
+
+---
+
+## Functions - naming input parameters
+
+- It's best practice, however, to name the arguments as you pass them...
+
+--
+
+```{r function_naming_input_parameters_2, echo = TRUE}
+string1 <- "hello world"
+substr(x = string1, start = 1, stop = 5)
+```
+
+---
+
+## Recap
+
+- Values can then be stored in lots of different structures*
+- These structures can be subsetted using different approaches
+- Almost every action in R is performed via a function*
+- A function takes an input, does some computation and returns an output
+- It's always good to be explicit when providing arguments to functions

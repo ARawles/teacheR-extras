@@ -13,7 +13,7 @@ directories:
 
 script:
   - Rscript -e 'rmarkdown::render("index.md", output_dir = "pages")'
-  - Rscript -e 'rmarkdown::render("presentations/1_Intro/intro_to_r.Rmd", output_dir = "pages")'
+  - Rscript -e 'rmarkdown::render("presentations/1_Intro/intro_to_r.Rmd", output_dir = "pages/presentations")'
 
 deploy:
   provider: pages

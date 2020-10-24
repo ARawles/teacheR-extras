@@ -90,7 +90,7 @@ Adam Rawles
 
 Additional resources:
 + [teacheR](https://teacher.arawles.co.uk)
-+ [These presentations]()
++ [These presentations](https://arawles.github.io/teacheR-extras/)
 
 
 ---

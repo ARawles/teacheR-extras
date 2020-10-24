@@ -1,16 +1,13 @@
----
-output:
-  xaringan::moon_reader:
-    lib_dir: libs
-    nature:
-      highlightStyle: github
-      highlightLines: true
-      countIncrementalSlides: false
-    css: ["../../css/custom.css"]
-  pdf_document: default
-  md_document: default
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>intro_to_r.utf8</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\css\custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
 
----
 
 class: center, middle
 
@@ -23,15 +20,23 @@ Adam Rawles
 
 --
 
-- What is R and RStudio?
+- What's in this course?
 
 --
 
-- Basic arithmetic operators
+- What is R?
 
 --
 
-- Variable assigment
+- What is RStudio?
+
+--
+
+- Packages
+
+--
+
+- Variables
 
 --
 
@@ -39,26 +44,65 @@ Adam Rawles
 
 --
 
-- Data structures (including subsetting)
+---
+
+## Intro to R Course
 
 --
 
-- Functions
+1. Introduction to R
+
+--
+
+  + What is R?
+  + What is RStudio?
+  + Packages
+  + Variables and data types
+
+--
+
+2. Data Structures and Functions
+  + Data structures
+    + Vectors
+    + Lists
+    + Dataframes
+  + Functions
+    + What is a function?
+    + How to use a function
+
+--
+
+3. Data Analysis
+  + Workflows
+  + `%&gt;%` and the Tidyverse
+  + Loading and cleaning data
+
+--
+
+4. Data Analysis Pt. 2
+  + Summarising data
+  + Plotting
+
+--
+
+Additional resources:
++ [teacheR](https://teacher.arawles.co.uk)
++ [These presentations]()
+
 
 ---
-
 ## Learning Objectives
 
 
-- Understand the basics of RStudio
+- Understand the basics of R and RStudio
+
+--
+
+- Know how to assign a variable in R
 
 --
 
 - Know the difference between the data types and structures in R
-
---
-
-- Understand the concepts of how functions operate in R
 
 --
 
@@ -161,9 +205,18 @@ Adam Rawles
 --
 
 
-   <b>Note</b>: You can move which pane shows which windows via the Tools -> Global Options dialog
+   **Note**: You can move which pane shows which windows via the Tools -&gt; Global Options dialog
 
 ---
+
+## Exercise
+
+--
+
+- Open RStudio
+  - Create an R Script called my_script.R
+  - Add `# My first comment` at the top of the file
+  - Save it anywhere
 
 ## Basic arithmetic
 
@@ -171,20 +224,40 @@ Adam Rawles
 
 --
 
-```{r basic_arithmetic, echo = TRUE}
+
+```r
 2 + 2 #add
+```
 
+```
+## [1] 4
+```
+
+```r
 2 * 3 #multiply
+```
 
+```
+## [1] 6
 ```
 
 --
 
-```{r basic_arithmetic_2, echo = TRUE}
 
+```r
 6/2 #divide
+```
 
+```
+## [1] 3
+```
+
+```r
 10 - 5 #subtract
+```
+
+```
+## [1] 5
 ```
 
 ---
@@ -195,32 +268,59 @@ Adam Rawles
 
 --
 
-```{r logical_operators_1, echo=TRUE}
 
+```r
 1 == 1 #equal
+```
 
+```
+## [1] TRUE
+```
+
+```r
 1 != 2 #not equal
+```
 
+```
+## [1] TRUE
 ```
 
 ---
 
 ## Logical operators
 
-```{r logical_operators_2, echo = TRUE}
 
-2 > 1 #greater than
-
-1 < 2 #less than
-
+```r
+2 &gt; 1 #greater than
 ```
 
-```{r}
+```
+## [1] TRUE
+```
 
+```r
+1 &lt; 2 #less than
+```
+
+```
+## [1] TRUE
+```
+
+
+```r
 1 == 1 | 1 == 2 #or
+```
 
-1 == 1 & 1 == 2 #and
+```
+## [1] TRUE
+```
 
+```r
+1 == 1 &amp; 1 == 2 #and
+```
+
+```
+## [1] FALSE
 ```
 
 ---
@@ -233,22 +333,26 @@ Adam Rawles
 
 --
 
-```{r variable_assignment_1, echo = TRUE}
-variable_1 <- 5
-variable_2 <- 10
 
-variable_3 <- variable_2/variable_1
+```r
+variable_1 &lt;- 5
+variable_2 &lt;- 10
+
+variable_3 &lt;- variable_2/variable_1
 variable_3
+```
 
+```
+## [1] 2
 ```
 --
 
-- For variable assignment, the `<-` and `=` operators can be used interchangeably
-- But it's better to use `<-`
+- For variable assignment, the `&lt;-` and `=` operators can be used interchangeably
+- But it's better to use `&lt;-`
 
 --
 
-- <b>Note</b>: the value of a variable is not printed when it is assigned (i.e. when we assign `5` to `variable_1`, we don't get any output in the console)
+- &lt;b&gt;Note&lt;/b&gt;: the value of a variable is not printed when it is assigned (i.e. when we assign `5` to `variable_1`, we don't get any output in the console)
 
 ---
 
@@ -259,13 +363,23 @@ variable_3
 
 --
 
-```{r variable_assignment_2, echo = TRUE}
-variable_1 <- 1
-variable_1
 
-variable_1 <- "hello world"
+```r
+variable_1 &lt;- 1
 variable_1
+```
 
+```
+## [1] 1
+```
+
+```r
+variable_1 &lt;- "hello world"
+variable_1
+```
+
+```
+## [1] "hello world"
 ```
 
 ---
@@ -313,12 +427,16 @@ variable_1
 - Assigning the right data type is important, as it determines how the data is stored and how data can be manipulated
 --
 
-```{r data_types_1, echo = TRUE, error= TRUE}
 
-variable_1 <- 5
-variable_2 <- "5"
+```r
+variable_1 &lt;- 5
+variable_2 &lt;- "5"
 
 variable_1 + variable_2
+```
+
+```
+## Error in variable_1 + variable_2: non-numeric argument to binary operator
 ```
 
 ---
@@ -328,12 +446,16 @@ variable_1 + variable_2
 - R will automatically decide the data type when you assign a variable, but you can force R to store the value as a different data type using the as.xxxxx functions
 --
 
-```{r data_types_2, echo = TRUE}
-variable_1 <- as.numeric("5")
-variable_2 <- as.integer("5")
+
+```r
+variable_1 &lt;- as.numeric("5")
+variable_2 &lt;- as.integer("5")
 
 variable_1 + variable_2
+```
 
+```
+## [1] 10
 ```
 --
 
@@ -341,9 +463,21 @@ variable_1 + variable_2
 
 --
 
-```{r data_types_3, echo = TRUE, error = TRUE}
-variable_1 <- as.numeric("hello world")
+
+```r
+variable_1 &lt;- as.numeric("hello world")
+```
+
+```
+## Warning: NAs introduced by coercion
+```
+
+```r
 variable_1
+```
+
+```
+## [1] NA
 ```
 
 ---
@@ -362,7 +496,7 @@ variable_1
 
 --
 
-- <b>Note</b>: when importing data into R, R will automatically try and convert columns containing strings into factors (unless you specify otherwise)
+- &lt;b&gt;Note&lt;/b&gt;: when importing data into R, R will automatically try and convert columns containing strings into factors (unless you specify otherwise)
 
 ---
 
@@ -392,13 +526,24 @@ variable_1
 --
 
 
-```{r data_structures_vectors, echo = TRUE}
 
-vector_1 <- c(1,2,3,4,5,6)
+```r
+vector_1 &lt;- c(1,2,3,4,5,6)
 vector_1
+```
 
-vector_2 <- c("first_value" = 1)
+```
+## [1] 1 2 3 4 5 6
+```
+
+```r
+vector_2 &lt;- c("first_value" = 1)
 vector_2
+```
+
+```
+## first_value 
+##           1
 ```
 
 - *More on the difference between atomic and recursive later
@@ -418,11 +563,16 @@ vector_2
   
 --
 
-```{r data_structures_matrices, echo = TRUE}
 
-matrix_1 <- matrix(c(1,2, 3,4), nrow = 2, ncol = 2)
+```r
+matrix_1 &lt;- matrix(c(1,2, 3,4), nrow = 2, ncol = 2)
 print(matrix_1)
+```
 
+```
+##      [,1] [,2]
+## [1,]    1    3
+## [2,]    2    4
 ```
 ---
 
@@ -437,11 +587,18 @@ print(matrix_1)
 
 --
 
-```{r data_structures_dataframes, echo = TRUE}
-dataframe1 <- data.frame(numeric_col = c(1,2),
+
+```r
+dataframe1 &lt;- data.frame(numeric_col = c(1,2),
                          character_col = c("hello", "world"),
                          stringsAsFactors = FALSE)
 dataframe1
+```
+
+```
+##   numeric_col character_col
+## 1           1         hello
+## 2           2         world
 ```
 
 - Important notes:
@@ -471,13 +628,20 @@ dataframe1
   
 --
 
-```{r data_structures_lists_1, echo = TRUE}
 
-list_1 <- list(numbers = c(1,2,3,4),
+```r
+list_1 &lt;- list(numbers = c(1,2,3,4),
                characters = (c("hello", "world"))
 )
 list_1
+```
 
+```
+## $numbers
+## [1] 1 2 3 4
+## 
+## $characters
+## [1] "hello" "world"
 ```
 
 ---
@@ -518,9 +682,14 @@ list_1
 
 - For vectors, this is done by suffixing the variable with a [] containing the index or indices of values you want
 
-```{r subsetting_data_structures, echo = TRUE}
-values <- c(6,45,7,54,99,31,12,15,67,100)
+
+```r
+values &lt;- c(6,45,7,54,99,31,12,15,67,100)
 values[1]
+```
+
+```
+## [1] 6
 ```
 
 ---
@@ -528,10 +697,21 @@ values[1]
 ## Subsetting data structures
 
 
-```{r subsetting_data_structures_2, echo = TRUE}
-values[c(1,10)]
-values[1:5] # this is the same as values[c(1,2,3,4,5)]
 
+```r
+values[c(1,10)]
+```
+
+```
+## [1]   6 100
+```
+
+```r
+values[1:5] # this is the same as values[c(1,2,3,4,5)]
+```
+
+```
+## [1]  6 45  7 54 99
 ```
 
 ---
@@ -585,11 +765,30 @@ values[1:5] # this is the same as values[c(1,2,3,4,5)]
 
 --
 
-```{r subsetting_vectors_exercise}
-vector1 <- c(1,5,8,9,67,5,3,2,5,6)
+
+```r
+vector1 &lt;- c(1,5,8,9,67,5,3,2,5,6)
 vector1[[5]]
+```
+
+```
+## [1] 67
+```
+
+```r
 vector1[c(1,3)]
+```
+
+```
+## [1] 1 8
+```
+
+```r
 vector1[c(1:5, 7)]
+```
+
+```
+## [1]  1  5  8  9 67  3
 ```
 
 ---
@@ -603,11 +802,22 @@ vector1[c(1:5, 7)]
 
 - In these cases, we specify an index for each dimension, starting with the row
 
-```{r subsetting_matrices, echo = TRUE}
 
-matrix_1 <- matrix(c(1,2,3,4), ncol = 2, nrow = 2)
+```r
+matrix_1 &lt;- matrix(c(1,2,3,4), ncol = 2, nrow = 2)
 matrix_1[1,2]
+```
+
+```
+## [1] 3
+```
+
+```r
 matrix_1[,2]
+```
+
+```
+## [1] 3 4
 ```
 
 --
@@ -626,15 +836,27 @@ matrix_1[,2]
 
 --
 
-```{r subsetting_data_frames, echo = TRUE}
-dataframe_1 <- data.frame(numeric_col = c(1,2), character_col = c("hello", "world"), stringsAsFactors = FALSE)
+
+```r
+dataframe_1 &lt;- data.frame(numeric_col = c(1,2), character_col = c("hello", "world"), stringsAsFactors = FALSE)
 dataframe_1$character_col
+```
+
+```
+## [1] "hello" "world"
+```
+
+```r
 dataframe_1$character_col[1]
+```
+
+```
+## [1] "hello"
 ```
 
 --
 
-- <b>Note</b>: data frames can also be subsetted using the [x, y] format, with names or indices
+- &lt;b&gt;Note&lt;/b&gt;: data frames can also be subsetted using the [x, y] format, with names or indices
 
 ---
 
@@ -653,11 +875,22 @@ dataframe_1$character_col[1]
 
 --
 
-```{r subsetting_exercise, echo = TRUE}
-df1 <- data.frame(numeric_col = c(1,2,3), logical_col = c(TRUE, FALSE, TRUE), stringsAsFactors = FALSE)
-df1$numeric_col[1]
-df1[,2]
 
+```r
+df1 &lt;- data.frame(numeric_col = c(1,2,3), logical_col = c(TRUE, FALSE, TRUE), stringsAsFactors = FALSE)
+df1$numeric_col[1]
+```
+
+```
+## [1] 1
+```
+
+```r
+df1[,2]
+```
+
+```
+## [1]  TRUE FALSE  TRUE
 ```
 
 ---
@@ -669,11 +902,23 @@ df1[,2]
 
 --
 
-```{r subsetting_lists_1, echo = TRUE}
-list_1 <- list(numbers = c(1,2,3,4), characters = (c("hello", "world")))
+
+```r
+list_1 &lt;- list(numbers = c(1,2,3,4), characters = (c("hello", "world")))
 
 list_1$numbers
+```
+
+```
+## [1] 1 2 3 4
+```
+
+```r
 list_1$characters[1]
+```
+
+```
+## [1] "hello"
 ```
 
 --
@@ -696,10 +941,14 @@ list_1$characters[1]
 
 --
 
-```{r subsetting_lists_2, echo = TRUE}
-list_1 <- list(numbers = c(1,2,3,4), characters = (c("hello", "world")))
-list_1[[1]][2]
 
+```r
+list_1 &lt;- list(numbers = c(1,2,3,4), characters = (c("hello", "world")))
+list_1[[1]][2]
+```
+
+```
+## [1] 2
 ```
 
 ---
@@ -718,10 +967,14 @@ list_1[[1]][2]
 
 --
 
-```{r functions_1, echo = TRUE}
-values <- c(10,20,30)
-mean(values)
 
+```r
+values &lt;- c(10,20,30)
+mean(values)
+```
+
+```
+## [1] 20
 ```
 
 --
@@ -789,9 +1042,14 @@ mean(values)
 
 --
 
-```{r function_naming_input_parameters_1, echo = TRUE}
-string1 <- "hello world"
+
+```r
+string1 &lt;- "hello world"
 substr(string1, 1,5)
+```
+
+```
+## [1] "hello"
 ```
 
 - The `substr()` function expects 3 arguments;
@@ -820,9 +1078,14 @@ substr(string1, 1,5)
 
 --
 
-```{r function_naming_input_parameters_2, echo = TRUE}
-string1 <- "hello world"
+
+```r
+string1 &lt;- "hello world"
 substr(x = string1, start = 1, stop = 5)
+```
+
+```
+## [1] "hello"
 ```
 
 ---
@@ -838,3 +1101,126 @@ substr(x = string1, start = 1, stop = 5)
 - Almost every action in R is performed via a function
 - A function takes an input, does some computation and returns an output
 - It's always good to be explicit when providing arguments to functions
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

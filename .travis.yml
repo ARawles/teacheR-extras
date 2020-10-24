@@ -1,0 +1,24 @@
+language: r
+dist: xenial
+latex: false
+
+branches:
+  only:
+  - master
+
+cache:
+  packages: yes
+directories:
+  - $HOME/bin
+
+script:
+  - Rscript -e 'rmarkdown::render("index.md", output_dir = "pages")'
+  - Rscript -e 'rmarkdown::render("presentations/1_Intro/intro_to_r.Rmd", output_dir = "pages")'
+
+deploy:
+  provider: pages
+skip_cleanup: true
+github_token: $GITHUB_TOKEN
+on:
+  branch: master
+local_dir: pages

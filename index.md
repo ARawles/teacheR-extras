@@ -1,3 +1,7 @@
+---
+title: teacheR
+---
+
 # teacheR extras
 
 Below are links to the 4 presentations given as part of my Intro to R course:

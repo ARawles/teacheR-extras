@@ -19,36 +19,6 @@ class: center, middle
 Adam Rawles
 ---
 
-## Overview
-
---
-
-- What's in this course?
-
---
-
-- What is R?
-
---
-
-- What is RStudio?
-
---
-
-- Packages
-
---
-
-- Variables
-
---
-
-- Data types
-
---
-
----
-
 ## Intro to R Course
 
 --
@@ -73,7 +43,9 @@ Adam Rawles
     + What is a function?
     + How to use a function
 
---
+---
+
+## Intro to R Course
 
 3. Data Analysis
   + Workflows
@@ -86,14 +58,37 @@ Adam Rawles
   + Summarising data
   + Plotting
 
---
+---
 
-Additional resources:
+## Additional resources
+
 + [teacheR](https://teacher.arawles.co.uk)
 + [These presentations](https://arawles.github.io/teacheR-extras/)
 
+---
+
+## Overview
+
+- What is R?
+
+--
+
+- What is RStudio?
+
+--
+
+- Packages
+
+--
+
+- Variables
+
+--
+
+- Data types
 
 ---
+
 ## Learning Objectives
 
 
@@ -105,7 +100,7 @@ Additional resources:
 
 --
 
-- Know the difference between the data types and structures in R
+- Know the difference between the data types in R
 
 --
 
@@ -128,11 +123,11 @@ Additional resources:
    
 --
 
-  + Data analysis
-  + Machine learning
-  + Data-driven apps
-  + Reporting/Presentation
-  + Academic research
+     + Data analysis
+     + Machine learning
+     + Data-driven apps
+     + Reporting/Presentation
+     + Academic research
    
 --
 
@@ -354,27 +349,27 @@ variable_1
 
 --
 
-+ logical; TRUE, FALSE
+  + logical; TRUE, FALSE
 
 --
 
-+ double; 12.5, 1, 999
+  + double; 12.5, 1, 999
 
 --
 
-+ integer; 2L, 34L, 1294L
+  + integer; 2L, 34L, 1294L
 
 --
 
-+ character; "hello world", "True"
+  + character; "hello world", "True"
 
 --
 
-+ dates; 2019-06-01
+  + dates; 2019-06-01
 
 --
 
-+ datetimes; 2019-06-01 12:00:00
+  + datetimes; 2019-06-01 12:00:00
 
 ---
 
@@ -429,11 +424,7 @@ variable_1
 
 --
 
-- For example, if we had a dataframe containing firms from different division, we might store "Lead Division" as a factor, with the levels Banking, Insurance, Investment, Fiduciary
-
---
-
-- **Note**: when importing data into R, R will automatically try and convert columns containing strings into factors (unless you specify otherwise)
+- For example, if we had a dataframe containing data for different countries, we might store "Country" as a factor, with the levels UK, France, USA, etc.
 
 ---
 

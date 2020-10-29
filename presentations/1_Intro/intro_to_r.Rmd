@@ -428,6 +428,11 @@ variable_1
 
 ---
 
+## Exercise - Data Types
+
+* Try the `as.numeric()`, `as.integer()`, `as.character()` and `as.logical()` functions
+* If you have time, try using the `as.Date()` function (HARD)
+
 ## Recap
 
 - R is a statistical programming language*

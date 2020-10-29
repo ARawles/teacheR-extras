@@ -246,6 +246,7 @@ Adam Rawles
   - Create an R Script called my_script.R
   - Add `# My first comment` at the top of the file
   - Save it anywhere
+  - Write `print("hello world")` in the script and run it
 
 
 

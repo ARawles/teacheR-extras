@@ -6,7 +6,7 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
-    css: ["../../css/custom.css"]
+    css: ["../../css/custom.css", default, shinobi, ninjutsu]
   pdf_document: default
   md_document: default
 

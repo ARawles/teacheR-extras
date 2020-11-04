@@ -6,11 +6,20 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
-    css: ["../../css/custom.css", default, shinobi, ninjutsu]
+    css: ["custom.css", default, shinobi, ninjutsu]
   pdf_document: default
   md_document: default
 
 ---
+
+li {
+ margin: 20px 0;
+}
+
+.remark-code {
+    font-size: 15px;
+    line-height: 1.25;
+}
 
 class: center, middle
 

@@ -12,15 +12,6 @@ output:
 
 ---
 
-li {
- margin: 20px 0;
-}
-
-.remark-code {
-    font-size: 15px;
-    line-height: 1.25;
-}
-
 class: center, middle
 
 # Introduction to R

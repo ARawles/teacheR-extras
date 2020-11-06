@@ -1,12 +1,12 @@
 ---
 output:
   xaringan::moon_reader:
-    lib_dir: libs
+    #lib_dir: libs
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
-    css: ["../../css/custom.css"]
+    css: ["custom.css", default, shinobi, ninjutsu]
   pdf_document: default
   md_document: default
 ---

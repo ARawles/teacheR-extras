@@ -23,7 +23,7 @@ Adam Rawles
 
 --
 
-1. Introduction to R
+1. Introduction to R (Part 1)
 
 --
 
@@ -45,7 +45,7 @@ Adam Rawles
 
 ---
 
-## Intro to R Course
+## Intro to R Course (Part 2)
 
 3. Data Analysis
   + Workflows
@@ -115,7 +115,7 @@ Adam Rawles
 
 --
 
-   + Public license programming language
+   + Statistical programming language
    
 --
    
@@ -167,7 +167,7 @@ Adam Rawles
 
 --
 
-   + If you click on a variable in the Environment pane, this will also be displayed in the source window
+   + If you click on a data structure in the Environment pane, a preview will be displayed in the source window
 
 --
 
@@ -189,7 +189,7 @@ Adam Rawles
 
 --
 
-   + This pane displays any variables or data structures you've created
+   + This pane displays any variables or data structures you've created/assigned
 
 --
 

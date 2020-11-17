@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Tidyverse</title>
+    <meta charset="utf-8" />
+    <link href="tidyverse_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="tidyverse_files/remark-css-0.0.1/shinobi.css" rel="stylesheet" />
+    <link href="tidyverse_files/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Tidyverse
+
+---
+
+
+## Last week
+
+- Data structures
+  + Vectors
+  + Lists
+  + Dataframes
+  
+--
+
+- Functions
+  + What is a function?
+  + How to use a function
+  
+---
+
+## This week
+
+- Tidyverse
+
+--
+
+- `%&gt;%`
+
+--
+
+- Loading data
+
+--
+
+- Cleaning data
+
+---
+
+## Tidyverse
+
+--
+
+- A set of packages designed to make data cleaning, analysis and visualisation easier
+
+--
+
+- The 'core' Tidyverse packages are:
+  + `readr` (reading data)
+  + `tidyr` (tidying or reshaping data)
+  + `dplyr` (data manipulation and summarisation)
+  + `ggplot2` (plotting and graphics)
+  + `purrr` (functional programming tools)
+  + `tibble` (a re-imagining of the data frame)
+  + `stringr` (working with character strings)
+  + `forcats` (working with factors)
+
+--
+
+- In this course, we're just going to look at `readr`, `dplyr` and `ggplot2`
+
+---
+
+## Tidy data
+
+- Central to the Tidyverse is a common philosophy, built on the idea of tidy data
+
+--
+
+- That is essentially a way of storing data such that each observation has its own row, and each variable has its own column
+
+---
+
+## Tidy data example
+
+Tidy:
+
+
+```
+## # A tibble: 2 x 2
+##   Country Population
+##   &lt;chr&gt;        &lt;dbl&gt;
+## 1 UK        66650000
+## 2 US       328200000
+```
+
+Untidy:
+
+
+```
+## # A tibble: 1 x 2
+##         UK        US
+##      &lt;dbl&gt;     &lt;dbl&gt;
+## 1 66650000 328200000
+```
+
+---
+
+## Tidyverse and `%&gt;%`
+
+- Another integral part of the Tidyverse philosophy is the pipe (`%&gt;%`)
+
+--
+
+- The pipe takes the result from the function on its left hand side, and passes it as the first parameter to the function on the right hand side (or whatever you specify with a full stop (`.`))
+
+--
+
+Example:
+
+
+```r
+library(dplyr)
+"hello world" %&gt;% substr(1,5) %&gt;% paste("The world is saying", .)
+```
+
+```
+## [1] "The world is saying hello"
+```
+---
+ 
+## Tidyverse and `%&gt;%`
+
+- The pipe allows continuous lines of logic that follow from left to right. Without using the pipe, our previous example would look like this:
+
+
+```r
+paste("The world is saying", substr("hello world", 1, 5))
+```
+
+```
+## [1] "The world is saying hello"
+```
+
+--
+
+- This is much harder to read because we have to read from inside to out (i.e. `"hello world"` to `substr()` then to `paste()`)
+
+--
+
+- The pipe fits nicely into a data analysis workflow:
+
+
+```r
+load() %&gt;% clean() %&gt;% summarise() %&gt;% plot()
+```
+
+---
+
+## Data Loading
+
+- Time to load our dataset
+
+--
+
+- In RStudio, install and load the `readr` package (i.e. `install.packages("readr")` then `library(readr)`)
+
+--
+
+- Go to the raw csv file [here](https://raw.githubusercontent.com/ARawles/teacheR-extras/master/data/C19.csv), right click and press "Save as..."
+
+- Save it somewhere easily accessible
+
+---
+
+## Data Loading
+
+- Use the `readr::read_csv()` function to load the dataset into your R environment
+
+--
+
+- Your command will look something like this:
+
+
+```r
+c19 &lt;- read_csv("path_to_your_file")
+```
+
+```
+## Parsed with column specification:
+## cols(
+##   cdc_report_dt = col_double(),
+##   pos_spec_dt = col_double(),
+##   onset_dt = col_double(),
+##   current_status = col_character(),
+##   sex = col_character(),
+##   age_group = col_character(),
+##   ethnicity = col_character(),
+##   hosp_yn = col_logical(),
+##   icu_yn = col_logical(),
+##   death_yn = col_logical(),
+##   medcond_yn = col_logical()
+## )
+```
+
+---
+
+## Data cleaning
+
+- Now we've got our data in R, we need to clean it up a bit
+
+--
+
+- Install and load the `dplyr` package (i.e. `install.packages("dplyr")` then `library(dplyr)`)
+
+--
+
+- Looking at our dataset, we can see that the columns that should be dates are currently numbers. Let's fix that
+
+--
+
+- To create new columns or to overwrite existing columns, we use the `mutate` function from the `dplyr` package
+
+---
+
+## Data cleaning
+
+
+```r
+library(dplyr)
+c19 &lt;- c19 %&gt;%
+  mutate(cdc_report_dt = as.Date(cdc_report_dt, origin = "1899/12/30"))
+```
+
+--
+
+- Using this as a base, do the same for the `pos_spec_dt` and `onset_dt` columns
+
+- Hint: You can alter multiple columns in a single `mutate` call
+
+--
+
+
+```r
+c19 &lt;- c19 %&gt;%
+  mutate(pos_spec_dt = as.Date(pos_spec_dt, origin = "1899/12/30"),
+         onset_dt = as.Date(onset_dt, origin = "1899/12/30"))
+```
+
+---
+
+## Data cleaning (part 2)
+
+--
+
+- Convert the `sex` and `ethnicity` columns to factors using the `mutate` function as above
+
+--
+
+
+```r
+c19 &lt;- c19 %&gt;%
+  mutate(sex = as.factor(sex),
+         ethnicity = as.factor(ethnicity))
+```
+
+---
+
+## Recap
+
+- Today we looked at:
+  + Tidyverse and tidy data
+  + The pipe and why it's used
+  + How to load data in using the `readr::read_csv()` function
+  + How to overwrite columns using the `mutate()` function
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

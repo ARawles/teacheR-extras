@@ -1,4 +1,5 @@
 ---
+title: "Data Structures and Functions"
 output:
   xaringan::moon_reader:
     #lib_dir: libs

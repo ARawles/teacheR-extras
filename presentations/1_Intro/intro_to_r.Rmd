@@ -1,4 +1,5 @@
 ---
+title: "Intro to R"
 output:
   xaringan::moon_reader:
     #lib_dir: libs

@@ -1,12 +1,13 @@
 ---
+title: "Intro to R"
 output:
   xaringan::moon_reader:
-    lib_dir: libs
+    #lib_dir: libs
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
-    css: ["../../css/custom.css"]
+    css: ["custom.css", default, shinobi, ninjutsu]
   pdf_document: default
   md_document: default
 
@@ -19,41 +20,11 @@ class: center, middle
 Adam Rawles
 ---
 
-## Overview
-
---
-
-- What's in this course?
-
---
-
-- What is R?
-
---
-
-- What is RStudio?
-
---
-
-- Packages
-
---
-
-- Variables
-
---
-
-- Data types
-
---
-
----
-
 ## Intro to R Course
 
 --
 
-1. Introduction to R
+1. Introduction to R (Part 1)
 
 --
 
@@ -73,7 +44,9 @@ Adam Rawles
     + What is a function?
     + How to use a function
 
---
+---
+
+## Intro to R Course (Part 2)
 
 3. Data Analysis
   + Workflows
@@ -86,14 +59,37 @@ Adam Rawles
   + Summarising data
   + Plotting
 
---
+---
 
-Additional resources:
+## Additional resources
+
 + [teacheR](https://teacher.arawles.co.uk)
 + [These presentations](https://arawles.github.io/teacheR-extras/)
 
+---
+
+## Overview
+
+- What is R?
+
+--
+
+- What is RStudio?
+
+--
+
+- Packages
+
+--
+
+- Variables
+
+--
+
+- Data types
 
 ---
+
 ## Learning Objectives
 
 
@@ -105,7 +101,7 @@ Additional resources:
 
 --
 
-- Know the difference between the data types and structures in R
+- Know the difference between the data types in R
 
 --
 
@@ -120,7 +116,7 @@ Additional resources:
 
 --
 
-   + Public license programming language
+   + Statistical programming language
    
 --
    
@@ -128,11 +124,11 @@ Additional resources:
    
 --
 
-  + Data analysis
-  + Machine learning
-  + Data-driven apps
-  + Reporting/Presentation
-  + Academic research
+     + Data analysis
+     + Machine learning
+     + Data-driven apps
+     + Reporting/Presentation
+     + Academic research
    
 --
 
@@ -172,7 +168,7 @@ Additional resources:
 
 --
 
-   + If you click on a variable in the Environment pane, this will also be displayed in the source window
+   + If you click on a data structure in the Environment pane, a preview will be displayed in the source window
 
 --
 
@@ -194,7 +190,7 @@ Additional resources:
 
 --
 
-   + This pane displays any variables or data structures you've created
+   + This pane displays any variables or data structures you've created/assigned
 
 --
 
@@ -251,6 +247,7 @@ Additional resources:
   - Create an R Script called my_script.R
   - Add `# My first comment` at the top of the file
   - Save it anywhere
+  - Write `print("hello world")` in the script and run it
 
 
 
@@ -354,27 +351,27 @@ variable_1
 
 --
 
-+ logical; TRUE, FALSE
+  + logical; TRUE, FALSE
 
 --
 
-+ double; 12.5, 1, 999
+  + double; 12.5, 1, 999
 
 --
 
-+ integer; 2L, 34L, 1294L
+  + integer; 2L, 34L, 1294L
 
 --
 
-+ character; "hello world", "True"
+  + character; "hello world", "True"
 
 --
 
-+ dates; 2019-06-01
+  + dates; 2019-06-01
 
 --
 
-+ datetimes; 2019-06-01 12:00:00
+  + datetimes; 2019-06-01 12:00:00
 
 ---
 
@@ -429,11 +426,14 @@ variable_1
 
 --
 
-- For example, if we had a dataframe containing firms from different division, we might store "Lead Division" as a factor, with the levels Banking, Insurance, Investment, Fiduciary
+- For example, if we had a dataframe containing data for different countries, we might store "Country" as a factor, with the levels UK, France, USA, etc.
 
---
+---
 
-- **Note**: when importing data into R, R will automatically try and convert columns containing strings into factors (unless you specify otherwise)
+## Exercise - Data Types
+
+* Try the `as.numeric()`, `as.integer()`, `as.character()` and `as.logical()` functions
+* If you have time, try using the `as.Date()` function (HARD)
 
 ---
 

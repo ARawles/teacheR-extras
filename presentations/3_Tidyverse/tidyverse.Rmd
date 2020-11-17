@@ -1,0 +1,240 @@
+---
+title: Tidyverse
+output:
+  xaringan::moon_reader:
+    #lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+    css: ["custom.css", default, shinobi, ninjutsu]
+  pdf_document: default
+  md_document: default
+---
+
+## Last week
+
+- Data structures
+  + Vectors
+  + Lists
+  + Dataframes
+  
+--
+
+- Functions
+  + What is a function?
+  + How to use a function
+  
+---
+
+## This week
+
+- Tidyverse
+
+--
+
+- `%>%`
+
+--
+
+- Loading data
+
+--
+
+- Cleaning data
+
+---
+
+## Tidyverse
+
+--
+
+- A set of packages designed to make data cleaning, analysis and visualisation easier
+
+--
+
+- The 'core' Tidyverse packages are:
+  + `readr` (reading data)
+  + `tidyr` (tidying or reshaping data)
+  + `dplyr` (data manipulation and summarisation)
+  + `ggplot2` (plotting and graphics)
+  + `purrr` (functional programming tools)
+  + `tibble` (a re-imagining of the data frame)
+  + `stringr` (working with character strings)
+  + `forcats` (working with factors)
+
+--
+
+- In this course, we're just going to look at `readr`, `dplyr` and `ggplot2`
+
+---
+
+## Tidy data
+
+- Central to the Tidyverse is a common philosophy, built on the idea of tidy data
+
+--
+
+- That is essentially a way of storing data such that each observation has its own row, and each variable has its own column
+
+---
+
+## Tidy data example
+
+Tidy:
+
+``` {r, echo = FALSE}
+tibble::tribble(~Country, ~Population,
+                "UK", 66650000,
+                "US", 328200000)
+```
+
+Untidy:
+
+```{r, echo = FALSE}
+tibble::tribble(~UK, ~US,
+                66650000, 328200000)
+```
+
+---
+
+## Tidyverse and `%>%`
+
+- Another integral part of the Tidyverse philosophy is the pipe (`%>%`)
+
+--
+
+- The pipe takes the result from the function on its left hand side, and passes it as the first parameter to the function on the right hand side (or whatever you specify with a full stop (`.`))
+
+--
+
+Example:
+
+```{r, echo = TRUE}
+library(dplyr)
+"hello world" %>% substr(1,5) %>% paste("The world is saying", .)
+```
+---
+ 
+## Tidyverse and `%>%`
+
+- The pipe allows continuous lines of logic that follow from left to right. Without using the pipe, our previous example would look like this:
+
+```{r}
+paste("The world is saying", substr("hello world", 1, 5))
+```
+
+--
+
+- This is much harder to read because we have to read from inside to out (i.e. `"hello world"` to `substr()` then to `paste()`)
+
+--
+
+- The pipe fits nicely into a data analysis workflow:
+
+```{r, eval = FALSE}
+load() %>% clean() %>% summarise() %>% plot()
+```
+
+---
+
+## Data Loading
+
+- Time to load our dataset
+
+--
+
+- In RStudio, install and load the `readr` package (i.e. `install.packages("readr")` then `library(readr)`)
+
+--
+
+- Go to the raw csv file [here](https://raw.githubusercontent.com/ARawles/teacheR-extras/master/data/C19.csv), right click and press "Save as..."
+
+- Save it somewhere easily accessible
+
+---
+
+## Data Loading
+
+- Use the `readr::read_csv()` function to load the dataset into your R environment
+
+--
+
+- Your command will look something like this:
+
+```{r, eval = FALSE}
+library(readr)
+c19 <- read_csv("path_to_your_file")
+```
+```{r, echo = FALSE}
+library(readr)
+c19 <- read_csv("../../data/C19.csv")
+```
+
+---
+
+## Data cleaning
+
+- Now we've got our data in R, we need to clean it up a bit
+
+--
+
+- Install and load the `dplyr` package (i.e. `install.packages("dplyr")` then `library(dplyr)`)
+
+--
+
+- Looking at our dataset, we can see that the columns that should be dates are currently numbers. Let's fix that
+
+--
+
+- To create new columns or to overwrite existing columns, we use the `mutate` function from the `dplyr` package
+
+---
+
+## Data cleaning
+
+```{r}
+library(dplyr)
+c19 <- c19 %>%
+  mutate(cdc_report_dt = as.Date(cdc_report_dt, origin = "1899/12/30"))
+```
+
+--
+
+- Using this as a base, do the same for the `pos_spec_dt` and `onset_dt` columns
+
+- Hint: You can alter multiple columns in a single `mutate` call
+
+--
+
+```{r}
+c19 <- c19 %>%
+  mutate(pos_spec_dt = as.Date(pos_spec_dt, origin = "1899/12/30"),
+         onset_dt = as.Date(onset_dt, origin = "1899/12/30"))
+```
+
+---
+
+## Data cleaning (part 2)
+
+--
+
+- Convert the `sex` and `ethnicity` columns to factors using the `mutate` function as above
+
+--
+
+```{r}
+c19 <- c19 %>%
+  mutate(sex = as.factor(sex),
+         ethnicity = as.factor(ethnicity))
+```
+
+---
+
+## Recap
+
+- Today we looked at:
+  + Tidyverse and tidy data
+  + The pipe and why it's used
+  + How to load data in using the `readr::read_csv()` function
+  + How to overwrite columns using the `mutate()` function

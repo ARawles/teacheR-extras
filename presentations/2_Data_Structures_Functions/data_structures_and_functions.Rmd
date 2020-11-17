@@ -1,12 +1,13 @@
 ---
+title: "Data Structures and Functions"
 output:
   xaringan::moon_reader:
-    lib_dir: libs
+    #lib_dir: libs
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
-    css: ["../../css/custom.css"]
+    css: ["custom.css", default, shinobi, ninjutsu]
   pdf_document: default
   md_document: default
 ---
@@ -198,80 +199,13 @@ print(matrix_1)
 
 --
 
-- We call the process of extracting particular values from a data strucuture subsetting
+- We call the process of extracting particular values from a data structure subsetting
 
 --
 
-- We're going to look very briefly at how to subset vectors, lists and dataframes, but this is covered in more detail in the book
+- We're not going to go through subsetting today, so I'd recommend reading the [Subsetting](https://teacher.arawles.co.uk/subsetting.html) chapter in the teacheR book.
 
 --- 
-
-## Subsetting lists and vectors
-
-
-- To subset a list or vector, we use `[]` brackets
-
-- In the brackets, we give the locations (indexes) of the values we want
-
---
-
-Example:
-
-```{r, echo = TRUE}
-
-c(1,2,3)[1]
-list(c(1,2,3), c(1,2,3))[1]
-```
-
----
-
-## Subsetting lists
-
-- When subsetting lists, there is a difference between subsetting with `[]` and `[[]]`
-
-
---
-
-- `[]`
-  + Returns a list
-  + Accepts more than one value
-
---
-
-- `[[]]`
-  + Returns a single object
-  + Only accepts one value
-
----
-
-## Example
-
-```{r}
-test_list <- list(first_value = c(1,2,3),
-                  second_value = c(100,200,300))
-test_list[1]
-test_list[[2]]
-```
-
----
-
-## Subsetting lists and dataframes
-
-- You can subset dataframes and lists (if they have named values) using `$`
-
---
-
-```{r}
-test_list$first_value
-dataframe1$numeric_col
-```
---
-
-- For the list, this returns the item with that name
-
-- For the dataframe, it returns the column
-
----
 
 ## Functions
 

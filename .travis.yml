@@ -24,3 +24,4 @@ deploy:
   on:
     branch: master
   local_dir: pages
+  fqdn: teacher-extras.arawles.co.uk

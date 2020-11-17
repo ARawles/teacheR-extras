@@ -15,4 +15,8 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 
     rmarkdown,
-    xaringan
+    xaringan,
+    dplyr,
+    readr,
+    ggplot2,
+    tibble

@@ -163,9 +163,11 @@ load() %>% clean() %>% summarise() %>% plot()
 - Your command will look something like this:
 
 ```{r, eval = FALSE}
+library(readr)
 c19 <- read_csv("path_to_your_file")
 ```
 ```{r, echo = FALSE}
+library(readr)
 c19 <- read_csv("../../data/C19.csv")
 ```
 

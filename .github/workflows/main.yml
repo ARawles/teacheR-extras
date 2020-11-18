@@ -2,12 +2,8 @@
 
 name: CI
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
-    branches: [ master ]
-  pull_request:
     branches: [ master ]
 
 env:
@@ -58,10 +54,11 @@ jobs:
        
       - name: Render the presentations
         run: |
-          - Rscript -e 'rmarkdown::render("index.md", output_dir = "pages")'
-          - Rscript -e 'rmarkdown::render("presentations/1_Intro/intro_to_r.Rmd", output_dir = "pages/presentations")'
-          - Rscript -e 'rmarkdown::render("presentations/2_Data_Structures_Functions/data_structures_and_functions.Rmd", output_dir = "pages/presentations")'
-          - Rscript -e 'rmarkdown::render("presentations/3_Tidyverse/tidyverse.Rmd", output_dir = "pages/presentations")'
+          R -e 'rmarkdown::render("index.md", output_dir = "pages")'
+          R -e 'rmarkdown::render("presentations/1_Intro/intro_to_r.Rmd", output_dir = "pages/presentations")'
+          R -e 'rmarkdown::render("presentations/2_Data_Structures_Functions/data_structures_and_functions.Rmd", output_dir = "pages/presentations")'
+          R -e 'rmarkdown::render("presentations/3_Tidyverse/tidyverse.Rmd", output_dir = "pages/presentations")'
+          
       # Deploys the files to GitHubPages
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@3.7.1

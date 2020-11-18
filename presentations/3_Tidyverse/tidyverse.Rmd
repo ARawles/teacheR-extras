@@ -183,7 +183,7 @@ c19 <- read_csv("../../data/C19.csv")
 
 --
 
-- Looking at our dataset, we can see that the columns that should be dates are currently numbers. Let's fix that
+- Looking at our dataset, we can see that the columns that should be dates are currently character strings. Let's fix that
 
 --
 
@@ -196,7 +196,7 @@ c19 <- read_csv("../../data/C19.csv")
 ```{r}
 library(dplyr)
 c19 <- c19 %>%
-  mutate(cdc_report_dt = as.Date(cdc_report_dt, origin = "1899/12/30"))
+  mutate(cdc_report_dt = as.Date(cdc_report_dt, format = "%d/%m/%Y"))
 ```
 
 --
@@ -209,8 +209,8 @@ c19 <- c19 %>%
 
 ```{r}
 c19 <- c19 %>%
-  mutate(pos_spec_dt = as.Date(pos_spec_dt, origin = "1899/12/30"),
-         onset_dt = as.Date(onset_dt, origin = "1899/12/30"))
+  mutate(pos_spec_dt = as.Date(pos_spec_dt, format = "%d/%m/%Y"),
+         onset_dt = as.Date(onset_dt,  format = "%d/%m/%Y"))
 ```
 
 ---
@@ -231,6 +231,60 @@ c19 <- c19 %>%
 
 ---
 
+
+## Data cleaning (alternative approach)
+
+--
+
+- We can actually use the `readr::read_csv()` function and the `col_types` argument to do this conversion in one step.
+
+--
+
+- When we first loaded in our dataset, `readr` told us what column types we were being given.
+- To override those, we just need to provide a `cols()` specification to the `read_csv()` function
+
+--
+
+- The `cols()` function requires us to specify each column type using the appropriate `col_[type]()` function.
+
+---
+
+
+## Data cleaning (alternative approach)
+
+- All together, using this approach would look like this:
+
+```{r, eval = FALSE}
+c19 <- read_csv("path_to_your_file", col_types = cols(col_date(format = "%d/%m/%Y"),
+                                                       col_date(format = "%d/%m/%Y"),
+                                                       col_date(format = "%d/%m/%Y"),
+                                                       col_character(),
+                                                       col_factor(),
+                                                       col_character(),
+                                                       col_factor(),
+                                                       col_logical(),
+                                                       col_logical(),
+                                                       col_logical(),
+                                                       col_logical()))
+```
+
+```{r, echo = FALSE}
+library(readr)
+c19 <- read_csv("../../data/C19.csv", col_types = cols(col_date(format = "%d/%m/%Y"),
+                                                       col_date(format = "%d/%m/%Y"),
+                                                       col_date(format = "%d/%m/%Y"),
+                                                       col_character(),
+                                                       col_factor(),
+                                                       col_character(),
+                                                       col_factor(),
+                                                       col_logical(),
+                                                       col_logical(),
+                                                       col_logical(),
+                                                       col_logical()))
+```
+
+---
+
 ## Recap
 
 - Today we looked at:
@@ -238,3 +292,4 @@ c19 <- c19 %>%
   + The pipe and why it's used
   + How to load data in using the `readr::read_csv()` function
   + How to overwrite columns using the `mutate()` function
+  + How to specify column types when importing data with `readr::read_csv()`

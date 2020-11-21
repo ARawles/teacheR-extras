@@ -21,6 +21,22 @@ class: center, middle, inverse, title-slide
 
 
 
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
 
 ## Last week
 
@@ -59,32 +75,14 @@ class: center, middle, inverse, title-slide
 - Filter and sort your dataset by date and by age group with:
 
 
-```r
-library(dplyr)
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
 
 ```r
 c19 &lt;- c19 %&gt;%
   filter(cdc_report_dt &gt;= as.Date("2020/03/01")) %&gt;%
   arrange(desc(cdc_report_dt), age_group)
 ```
+
+---
 
 ## Summarising data
 
@@ -99,6 +97,8 @@ c19 &lt;- c19 %&gt;%
 - Instead of analysing data at this level, you might want to aggregate it up
 
 - Then you can always investigate further at a more granular level in the future but this will point you in the right direction
+
+---
 
 ## Summarising data
 
@@ -147,7 +147,6 @@ c19 &lt;- c19 %&gt;%
 
 
 ```r
-library(dplyr, quietly = TRUE)
 c19_grouped &lt;- c19 %&gt;%
   group_by(cdc_report_dt, age_group)
 head(c19_grouped, 5)
@@ -171,7 +170,9 @@ head(c19_grouped, 5)
 
 - Now when we view our dataset, it looks like the same but we can see that it is grouped: `Groups: cdc_report_dt, age_group [3]`
 
-## `sumamrise()`
+---
+
+## `summarise()`
 
 - The data still looks the same though because we haven't done our summarisation yet, we've just told R what we want to group by
 
@@ -291,6 +292,8 @@ head(c19_example, 5)
 
 - `ggplot2` is a very extensive and useful library, and we're really only going to brush the surface today
 
+---
+
 ## `ggplot2`
 
 - To start of with, we need to define what dataset we want to plot, what we want on each axis and what we want to group by
@@ -299,7 +302,7 @@ head(c19_example, 5)
 
 
 ```r
-library(ggplot2)
+#library(ggplot2) # Make sure ggplot2 is loaded!
 ggplot(data = c19_grouped, aes(x = cdc_report_dt, y = number_of_cases))
 ```
 

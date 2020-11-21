@@ -19,4 +19,5 @@ Imports:
     dplyr,
     readr,
     ggplot2,
-    tibble
+    tibble,
+    ggplot2

@@ -1,0 +1,313 @@
+---
+title: "Data Analysis (Part 2)"
+output:
+  xaringan::moon_reader:
+    #lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+    css: ["custom.css", default, shinobi, ninjutsu]
+  pdf_document: default
+  md_document: default
+---
+
+```{r, echo = FALSE}
+library(readr)
+c19 <- read_csv("../../data/C19.csv", col_types = cols(col_date(format = "%d/%m/%Y"),
+                                                       col_date(format = "%d/%m/%Y"),
+                                                       col_date(format = "%d/%m/%Y"),
+                                                       col_character(),
+                                                       col_factor(),
+                                                       col_character(),
+                                                       col_factor(),
+                                                       col_logical(),
+                                                       col_logical(),
+                                                       col_logical(),
+                                                       col_logical()))
+```
+
+## Last week
+
+- Tidyverse
+
+--
+
+- `%>%`
+
+--
+
+- Loading data
+
+--
+
+- Cleaning data
+
+---
+
+## This week
+
+- Summarising data with `dplyr`
+
+--
+
+- Plotting with `ggplot2`
+
+## Setup
+
+- If you haven't already, install `ggplot2` and `dplyr` using the `install.packages()` function
+
+- Add the `library(dplyr)` and `library(ggplot2)` lines to the top of your script (if they aren't already there)
+
+- Make sure you've got your C19 dataset loaded
+
+- Filter and sort your dataset by date and by age group with:
+
+```{r}
+library(dplyr)
+c19 <- c19 %>%
+  filter(cdc_report_dt >= as.Date("2020/03/01")) %>%
+  arrange(desc(cdc_report_dt), age_group)
+  
+```
+
+## Summarising data
+
+- Our dataset currently has nearly 33,000 rows
+
+--
+
+- This is a lot of data, and so extracting meaningful conclusions from this level can be difficult
+
+--
+
+- Instead of analysing data at this level, you might want to aggregate it up
+
+- Then you can always investigate further at a more granular level in the future but this will point you in the right direction
+
+## Summarising data
+
+- Using our C19 data, we're going to aggregate up to a daily level and for each age group, so we'll have a value for each combination of date and age group*
+
+--
+
+- \* Unless there are no rows for a date and age group (e.g. there are no entries for "20-29 Years" on Feb 2nd)
+
+--
+
+- This will take us down from ~33,000 rows to 235
+
+--
+
+- In `dplyr`, we use the `group_by()` and `summarise()` functions to aggregate our data up
+
+--
+
+- If you used SQL before, it's a similar approach
+
+---
+
+## `group_by` & `summarise()`
+
+- Before we use the `summarise()` function, we need to tell R what we want variable we want to group by.
+
+--
+
+- This will then create a value for each unique value of that variable(s) that we grouped by
+
+--
+
+- So in our example, we would have a summarised value for each date and age group if we grouped by the `cdc_report_dt` and `age_group` columns
+
+
+---
+
+## `group_by`
+
+- So we know that we want to group our data by the `cdc_report_dt` and `age_group`
+
+--
+
+- To do so, we use the `group_by()` function like so:
+
+```{r}
+library(dplyr, quietly = TRUE)
+c19_grouped <- c19 %>%
+  group_by(cdc_report_dt, age_group)
+head(c19_grouped, 5)
+```
+
+--
+
+- Now when we view our dataset, it looks like the same but we can see that it is grouped: `Groups: cdc_report_dt, age_group [3]`
+
+## `sumamrise()`
+
+- The data still looks the same though because we haven't done our summarisation yet, we've just told R what we want to group by
+
+--
+
+- To summarise our data, we use the `summarise()` function a bit like we used the `mutate()` function:
+
+```{r}
+c19_grouped <- c19 %>%
+  group_by(cdc_report_dt, age_group) %>%
+  summarise(number_of_cases = n()) %>%
+  ungroup()
+head(c19_grouped, 5)
+
+```
+
+---
+
+## `summarise()`
+
+- In the `summarise()` function call, we say what we want our new column's name to be (number_of_cases here) and then we need to say what kind of summary function we want to apply
+
+--
+
+- In this case, we've just counted the number of entries for that date and age group (that's what the `n()` function does)
+
+--
+
+- But we could use any other summary function
+
+- For example, if we wanted to find the percentage of cases that resulted in death, we could use the `mean()` function on the `death_yn` column*:
+
+```{r}
+c19_example <- c19 %>%
+  group_by(cdc_report_dt, age_group) %>%
+  summarise(mortality_rate = mean(death_yn) * 100) %>%
+  ungroup()
+head(c19_example, 5)
+```
+
+--
+
+- \*Because logical values `TRUE`/`FALSE` are equivalent to numeric `1` and `0`, we can use numeric functions on logical value
+
+---
+
+## Plotting
+
+- Now that we have our summarised dataset, we want to actually see what's going on
+
+--
+
+- The easiest way to do this would be to create a line plot the shows the number of cases by each age group and date 
+
+- This is quite a common graphic that's displayed during the Government's press briefings
+
+--
+
+- To create our plot, we're going to use the `ggplot2` package
+
+---
+
+## `ggplot2`
+
+- The `ggplot2` package is a plotting library based on The Grammer of Graphics
+
+--
+
+- This is basically the idea that graphics are a bit like language in that they have a grammer that should be followed to make them understandable
+
+--
+
+- As part of these grammatical rules, we build plots in `ggplot2` in stages. You define your dataset, then what geom you want (lines, points, etc.), what you want to group the lines by, then what you want the scales to look like, etc.
+
+--
+
+- But rather than using the pipe, we use the `+` operator in `ggplot2`
+
+--
+
+- `ggplot2` is a very extensive and useful library, and we're really only going to brush the surface today
+
+## `ggplot2`
+
+- To start of with, we need to define what dataset we want to plot, what we want on each axis and what we want to group by
+
+- We do this using the `ggplot()` function to define our dataset, alongside the `aes()` function to define our axes:
+
+```{r}
+library(ggplot2)
+ggplot(data = c19_grouped, aes(x = cdc_report_dt, y = number_of_cases))
+```
+
+---
+
+## `ggplot2`
+
+- You'll notice that our plot is blank though
+
+--
+
+- This because we need to define what type of geom we want to use (e.g. bars, lines, points, etc.)
+
+--
+
+- In our case, we want to use a line, so we add the `geom_line()` function:
+
+```{r}
+ggplot(data = c19_grouped, aes(x = cdc_report_dt, y = number_of_cases)) +
+  geom_line()
+```
+
+---
+
+## `ggplot2`
+
+- Better, but that's not really what we wanted...
+
+--
+
+- We're seeing these weird squigly lines because our dataset has multiple values for each date (we've got a value for each age group)
+
+--
+
+- So what we need to do is have separate lines for each of our age groups, and perhaps we should have those as different colours
+
+--
+
+- To do that, we need to change our original `aes()` call:
+
+```{r}
+ggplot(data = c19_grouped, aes(x = cdc_report_dt, y = number_of_cases, colour = age_group)) +
+  geom_line()
+```
+
+---
+
+## `ggplot`
+
+- Much better
+
+--
+
+- But things are still messy...
+
+- For instance, our axes labels are our variable names which don't look good. And also we probably don't want the "Unknown" and "NA" groups
+
+--
+
+- To change our scales (age_group also counts as a scale), we use the `scale_x/y_[type]` functions. For example, if we want to change the x axis and the x variable is a date, we'
+d use the `scale_x_date()` function:
+
+```{r}
+ggplot(data = c19_grouped, aes(x = cdc_report_dt, y = number_of_cases, colour = age_group)) +
+  geom_line() +
+  scale_x_date(name = "CDC Report Date") +
+  scale_y_continuous(name = "Number of Cases") +
+  scale_color_discrete(name = "Age Group")
+```
+
+---
+
+## Exercises
+
+- Remove the "Unknown" and "NA" groups from your dataset using the `filter()` function and recreate your plot
+
+- Change the date breaks so that there is a label every two months using the `date_breaks` parameter of the `scale_x_date()` function (use `?scale_x_date()` to find out how to use it)
+
+- Change your dataset and plot so that you're plotting the mortality rate instead of the number of cases

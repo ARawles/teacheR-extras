@@ -13,6 +13,8 @@ output:
 ---
 
 ```{r, echo = FALSE}
+library(dplyr)
+library(ggplot2)
 library(readr)
 c19 <- read_csv("../../data/C19.csv", col_types = cols(col_date(format = "%d/%m/%Y"),
                                                        col_date(format = "%d/%m/%Y"),
@@ -63,13 +65,15 @@ c19 <- read_csv("../../data/C19.csv", col_types = cols(col_date(format = "%d/%m/
 
 - Filter and sort your dataset by date and by age group with:
 
+
 ```{r}
-library(dplyr)
 c19 <- c19 %>%
   filter(cdc_report_dt >= as.Date("2020/03/01")) %>%
   arrange(desc(cdc_report_dt), age_group)
   
 ```
+
+---
 
 ## Summarising data
 
@@ -84,6 +88,8 @@ c19 <- c19 %>%
 - Instead of analysing data at this level, you might want to aggregate it up
 
 - Then you can always investigate further at a more granular level in the future but this will point you in the right direction
+
+---
 
 ## Summarising data
 
@@ -131,7 +137,6 @@ c19 <- c19 %>%
 - To do so, we use the `group_by()` function like so:
 
 ```{r}
-library(dplyr, quietly = TRUE)
 c19_grouped <- c19 %>%
   group_by(cdc_report_dt, age_group)
 head(c19_grouped, 5)
@@ -141,7 +146,9 @@ head(c19_grouped, 5)
 
 - Now when we view our dataset, it looks like the same but we can see that it is grouped: `Groups: cdc_report_dt, age_group [3]`
 
-## `sumamrise()`
+---
+
+## `summarise()`
 
 - The data still looks the same though because we haven't done our summarisation yet, we've just told R what we want to group by
 
@@ -224,6 +231,8 @@ head(c19_example, 5)
 
 - `ggplot2` is a very extensive and useful library, and we're really only going to brush the surface today
 
+---
+
 ## `ggplot2`
 
 - To start of with, we need to define what dataset we want to plot, what we want on each axis and what we want to group by
@@ -231,7 +240,7 @@ head(c19_example, 5)
 - We do this using the `ggplot()` function to define our dataset, alongside the `aes()` function to define our axes:
 
 ```{r}
-library(ggplot2)
+#library(ggplot2) # Make sure ggplot2 is loaded!
 ggplot(data = c19_grouped, aes(x = cdc_report_dt, y = number_of_cases))
 ```
 

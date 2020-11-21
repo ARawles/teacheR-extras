@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Data Analysis (Part 2)</title>
+    <meta charset="utf-8" />
+    <script src="data_analysis_files/header-attrs-2.5/header-attrs.js"></script>
+    <link href="data_analysis_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="data_analysis_files/remark-css-0.0.1/shinobi.css" rel="stylesheet" />
+    <link href="data_analysis_files/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <link href="data_analysis_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+    <script src="data_analysis_files/anchor-sections-1.0/anchor-sections.js"></script>
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Data Analysis (Part 2)
+
+---
+
+
+
+
+## Last week
+
+- Tidyverse
+
+--
+
+- `%&gt;%`
+
+--
+
+- Loading data
+
+--
+
+- Cleaning data
+
+---
+
+## This week
+
+- Summarising data with `dplyr`
+
+--
+
+- Plotting with `ggplot2`
+
+## Setup
+
+- If you haven't already, install `ggplot2` and `dplyr` using the `install.packages()` function
+
+- Add the `library(dplyr)` and `library(ggplot2)` lines to the top of your script (if they aren't already there)
+
+- Make sure you've got your C19 dataset loaded
+
+- Filter and sort your dataset by date and by age group with:
+
+
+```r
+library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
+c19 &lt;- c19 %&gt;%
+  filter(cdc_report_dt &gt;= as.Date("2020/03/01")) %&gt;%
+  arrange(desc(cdc_report_dt), age_group)
+```
+
+## Summarising data
+
+- Our dataset currently has nearly 33,000 rows
+
+--
+
+- This is a lot of data, and so extracting meaningful conclusions from this level can be difficult
+
+--
+
+- Instead of analysing data at this level, you might want to aggregate it up
+
+- Then you can always investigate further at a more granular level in the future but this will point you in the right direction
+
+## Summarising data
+
+- Using our C19 data, we're going to aggregate up to a daily level and for each age group, so we'll have a value for each combination of date and age group*
+
+--
+
+- \* Unless there are no rows for a date and age group (e.g. there are no entries for "20-29 Years" on Feb 2nd)
+
+--
+
+- This will take us down from ~33,000 rows to 235
+
+--
+
+- In `dplyr`, we use the `group_by()` and `summarise()` functions to aggregate our data up
+
+--
+
+- If you used SQL before, it's a similar approach
+
+---
+
+## `group_by` &amp; `summarise()`
+
+- Before we use the `summarise()` function, we need to tell R what we want variable we want to group by.
+
+--
+
+- This will then create a value for each unique value of that variable(s) that we grouped by
+
+--
+
+- So in our example, we would have a summarised value for each date and age group if we grouped by the `cdc_report_dt` and `age_group` columns
+
+
+---
+
+## `group_by`
+
+- So we know that we want to group our data by the `cdc_report_dt` and `age_group`
+
+--
+
+- To do so, we use the `group_by()` function like so:
+
+
+```r
+library(dplyr, quietly = TRUE)
+c19_grouped &lt;- c19 %&gt;%
+  group_by(cdc_report_dt, age_group)
+head(c19_grouped, 5)
+```
+
+```
+## # A tibble: 5 x 11
+## # Groups:   cdc_report_dt, age_group [1]
+##   cdc_report_dt pos_spec_dt onset_dt   current_status sex   age_group ethnicity
+##   &lt;date&gt;        &lt;date&gt;      &lt;date&gt;     &lt;chr&gt;          &lt;fct&gt; &lt;chr&gt;     &lt;fct&gt;    
+## 1 2020-10-16    2020-09-30  2020-09-25 Laboratory-co… Male  0 - 9 Ye… White, N…
+## 2 2020-10-16    2020-09-30  2020-09-30 Laboratory-co… Male  0 - 9 Ye… White, N…
+## 3 2020-10-16    2020-10-01  2020-09-30 Laboratory-co… Male  0 - 9 Ye… White, N…
+## 4 2020-10-16    2020-10-01  2020-10-05 Laboratory-co… Fema… 0 - 9 Ye… White, N…
+## 5 2020-10-16    2020-10-02  2020-10-02 Laboratory-co… Male  0 - 9 Ye… White, N…
+## # … with 4 more variables: hosp_yn &lt;lgl&gt;, icu_yn &lt;lgl&gt;, death_yn &lt;lgl&gt;,
+## #   medcond_yn &lt;lgl&gt;
+```
+
+--
+
+- Now when we view our dataset, it looks like the same but we can see that it is grouped: `Groups: cdc_report_dt, age_group [3]`
+
+## `sumamrise()`
+
+- The data still looks the same though because we haven't done our summarisation yet, we've just told R what we want to group by
+
+--
+
+- To summarise our data, we use the `summarise()` function a bit like we used the `mutate()` function:
+
+
+```r
+c19_grouped &lt;- c19 %&gt;%
+  group_by(cdc_report_dt, age_group) %&gt;%
+  summarise(number_of_cases = n()) %&gt;%
+  ungroup()
+```
+
+```
+## `summarise()` regrouping output by 'cdc_report_dt' (override with `.groups` argument)
+```
+
+```r
+head(c19_grouped, 5)
+```
+
+```
+## # A tibble: 5 x 3
+##   cdc_report_dt age_group     number_of_cases
+##   &lt;date&gt;        &lt;chr&gt;                   &lt;int&gt;
+## 1 2020-03-01    60 - 69 Years               4
+## 2 2020-03-01    70 - 79 Years               2
+## 3 2020-03-02    60 - 69 Years               1
+## 4 2020-03-02    70 - 79 Years               1
+## 5 2020-03-03    60 - 69 Years               2
+```
+
+---
+
+## `summarise()`
+
+- In the `summarise()` function call, we say what we want our new column's name to be (number_of_cases here) and then we need to say what kind of summary function we want to apply
+
+--
+
+- In this case, we've just counted the number of entries for that date and age group (that's what the `n()` function does)
+
+--
+
+- But we could use any other summary function
+
+- For example, if we wanted to find the percentage of cases that resulted in death, we could use the `mean()` function on the `death_yn` column*:
+
+
+```r
+c19_example &lt;- c19 %&gt;%
+  group_by(cdc_report_dt, age_group) %&gt;%
+  summarise(mortality_rate = mean(death_yn) * 100) %&gt;%
+  ungroup()
+```
+
+```
+## `summarise()` regrouping output by 'cdc_report_dt' (override with `.groups` argument)
+```
+
+```r
+head(c19_example, 5)
+```
+
+```
+## # A tibble: 5 x 3
+##   cdc_report_dt age_group     mortality_rate
+##   &lt;date&gt;        &lt;chr&gt;                  &lt;dbl&gt;
+## 1 2020-03-01    60 - 69 Years              0
+## 2 2020-03-01    70 - 79 Years              0
+## 3 2020-03-02    60 - 69 Years              0
+## 4 2020-03-02    70 - 79 Years            100
+## 5 2020-03-03    60 - 69 Years             50
+```
+
+--
+
+- \*Because logical values `TRUE`/`FALSE` are equivalent to numeric `1` and `0`, we can use numeric functions on logical value
+
+---
+
+## Plotting
+
+- Now that we have our summarised dataset, we want to actually see what's going on
+
+--
+
+- The easiest way to do this would be to create a line plot the shows the number of cases by each age group and date 
+
+- This is quite a common graphic that's displayed during the Government's press briefings
+
+--
+
+- To create our plot, we're going to use the `ggplot2` package
+
+---
+
+## `ggplot2`
+
+- The `ggplot2` package is a plotting library based on The Grammer of Graphics
+
+--
+
+- This is basically the idea that graphics are a bit like language in that they have a grammer that should be followed to make them understandable
+
+--
+
+- As part of these grammatical rules, we build plots in `ggplot2` in stages. You define your dataset, then what geom you want (lines, points, etc.), what you want to group the lines by, then what you want the scales to look like, etc.
+
+--
+
+- But rather than using the pipe, we use the `+` operator in `ggplot2`
+
+--
+
+- `ggplot2` is a very extensive and useful library, and we're really only going to brush the surface today
+
+## `ggplot2`
+
+- To start of with, we need to define what dataset we want to plot, what we want on each axis and what we want to group by
+
+- We do this using the `ggplot()` function to define our dataset, alongside the `aes()` function to define our axes:
+
+
+```r
+library(ggplot2)
+ggplot(data = c19_grouped, aes(x = cdc_report_dt, y = number_of_cases))
+```
+
+![](/home/runner/work/teacheR-extras/teacheR-extras/pages/data_analysis_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+---
+
+## `ggplot2`
+
+- You'll notice that our plot is blank though
+
+--
+
+- This because we need to define what type of geom we want to use (e.g. bars, lines, points, etc.)
+
+--
+
+- In our case, we want to use a line, so we add the `geom_line()` function:
+
+
+```r
+ggplot(data = c19_grouped, aes(x = cdc_report_dt, y = number_of_cases)) +
+  geom_line()
+```
+
+![](/home/runner/work/teacheR-extras/teacheR-extras/pages/data_analysis_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+---
+
+## `ggplot2`
+
+- Better, but that's not really what we wanted...
+
+--
+
+- We're seeing these weird squigly lines because our dataset has multiple values for each date (we've got a value for each age group)
+
+--
+
+- So what we need to do is have separate lines for each of our age groups, and perhaps we should have those as different colours
+
+--
+
+- To do that, we need to change our original `aes()` call:
+
+
+```r
+ggplot(data = c19_grouped, aes(x = cdc_report_dt, y = number_of_cases, colour = age_group)) +
+  geom_line()
+```
+
+![](/home/runner/work/teacheR-extras/teacheR-extras/pages/data_analysis_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+
+---
+
+## `ggplot`
+
+- Much better
+
+--
+
+- But things are still messy...
+
+- For instance, our axes labels are our variable names which don't look good. And also we probably don't want the "Unknown" and "NA" groups
+
+--
+
+- To change our scales (age_group also counts as a scale), we use the `scale_x/y_[type]` functions. For example, if we want to change the x axis and the x variable is a date, we'
+d use the `scale_x_date()` function:
+
+
+```r
+ggplot(data = c19_grouped, aes(x = cdc_report_dt, y = number_of_cases, colour = age_group)) +
+  geom_line() +
+  scale_x_date(name = "CDC Report Date") +
+  scale_y_continuous(name = "Number of Cases") +
+  scale_color_discrete(name = "Age Group")
+```
+
+![](/home/runner/work/teacheR-extras/teacheR-extras/pages/data_analysis_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+
+---
+
+## Exercises
+
+- Remove the "Unknown" and "NA" groups from your dataset using the `filter()` function and recreate your plot
+
+- Change the date breaks so that there is a label every two months using the `date_breaks` parameter of the `scale_x_date()` function (use `?scale_x_date()` to find out how to use it)
+
+- Change your dataset and plot so that you're plotting the mortality rate instead of the number of cases
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

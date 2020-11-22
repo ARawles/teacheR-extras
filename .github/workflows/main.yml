@@ -64,10 +64,22 @@ jobs:
         run: cp custom.css pages
           
       # Deploys the files to GitHubPages
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@3.7.1
+      #- name: Deploy to GitHub Pages
+      #  uses: JamesIves/github-pages-deploy-action@3.7.1
+      #  with:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #    BRANCH: gh-pages # The branch the action should deploy to.
+      #    FOLDER: pages # The folder the action should deploy.
+      #    CLEAN: FALSE # Automatically remove deleted files from the deploy branch
+      
+      - name: S3 Sync
+      - uses: jakejarvis/s3-sync-action@v0.5.1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: pages # The folder the action should deploy.
-          CLEAN: FALSE # Automatically remove deleted files from the deploy branch
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: 'eu-west-1'   # optional: defaults to us-east-1
+          SOURCE_DIR: 'pages'      # optional: defaults to entire repository
+          DEST_DIR: 'teacher-extras/slides'

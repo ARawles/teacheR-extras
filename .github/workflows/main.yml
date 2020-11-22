@@ -54,7 +54,6 @@ jobs:
        
       - name: Render the presentations
         run: |
-          R -e 'rmarkdown::render("index.md", output_dir = "pages")'
           R -e 'rmarkdown::render("presentations/1_Intro/intro_to_r.Rmd", output_dir = "pages")'
           R -e 'rmarkdown::render("presentations/2_Data_Structures_Functions/data_structures_and_functions.Rmd", output_dir = "pages")'
           R -e 'rmarkdown::render("presentations/3_Tidyverse/tidyverse.Rmd", output_dir = "pages")'

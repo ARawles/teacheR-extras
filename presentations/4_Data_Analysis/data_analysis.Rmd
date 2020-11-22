@@ -13,9 +13,9 @@ output:
 ---
 
 ```{r, echo = FALSE}
-library(dplyr)
-library(ggplot2)
-library(readr)
+library(dplyr, quietly = TRUE, warn.conflicts = FALSE)
+library(ggplot2, quietly = TRUE, warn.conflicts = FALSE)
+library(readr, quietly = TRUE, warn.conflicts = FALSE)
 c19 <- read_csv("../../data/C19.csv", col_types = cols(col_date(format = "%d/%m/%Y"),
                                                        col_date(format = "%d/%m/%Y"),
                                                        col_date(format = "%d/%m/%Y"),

@@ -103,7 +103,7 @@ c19 <- c19 %>%
 
 --
 
-- This will take us down from ~33,000 rows to 235
+- This will take us down from ~33,000 rows to ~1,000
 
 --
 

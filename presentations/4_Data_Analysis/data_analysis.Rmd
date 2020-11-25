@@ -16,8 +16,11 @@ output:
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
-  fig.path = "data_analysis_files/figure-html"
+  fig.path = "data_analysis_files/figure-html/"
 )
+# knitr::opts_knit$set(
+#   base.url = "/"
+# )
 library(dplyr, quietly = TRUE, warn.conflicts = FALSE)
 library(ggplot2, quietly = TRUE, warn.conflicts = FALSE)
 library(readr, quietly = TRUE, warn.conflicts = FALSE)

@@ -10,6 +10,7 @@ output:
       navigation:
         scroll: false
     css: ["custom.css", default, shinobi, ninjutsu]
+    self-contained: true
   pdf_document: default
   md_document: default
 ---

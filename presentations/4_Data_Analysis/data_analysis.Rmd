@@ -16,7 +16,9 @@ output:
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
-  fig.path = "data_analysis_files/figure-html/"
+  fig.path = "data_analysis_files/figure-html/",
+  fig.width = 7,
+  fig.height = 3
 )
 # knitr::opts_knit$set(
 #   base.url = "/"
@@ -291,7 +293,9 @@ ggplot(data = c19_grouped,
 
 - So what we need to do is have separate lines for each of our age groups, and perhaps we should have those as different colours
 
---
+---
+
+## `ggplot2`
 
 - To do that, we need to change our original `aes()` call:
 
@@ -303,7 +307,7 @@ ggplot(data = c19_grouped,
 
 ---
 
-## `ggplot`
+## `ggplot2`
 
 - Much better
 
@@ -313,10 +317,11 @@ ggplot(data = c19_grouped,
 
 - For instance, our axes labels are our variable names which don't look good. And also we probably don't want the "Unknown" and "NA" groups
 
---
+---
 
-- To change our scales (age_group also counts as a scale), we use the `scale_x/y_[type]` functions. For example, if we want to change the x axis and the x variable is a date, we'
-d use the `scale_x_date()` function:
+## `ggplot2` - Changing labels
+
+- To change our scales (`age_group` also counts as a scale), we use the `scale_[axis]_[type]` functions. For example, if we want to change the x axis and the x variable is a date, we'd use the `scale_x_date()` function:
 
 ```{r}
 ggplot(data = c19_grouped,

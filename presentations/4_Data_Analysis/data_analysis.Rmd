@@ -2,7 +2,6 @@
 title: "Data Analysis (Part 2)"
 output:
   xaringan::moon_reader:
-    lib_dir: libs
     nature:
       highlightStyle: github
       highlightLines: true

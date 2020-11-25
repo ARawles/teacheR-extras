@@ -291,10 +291,11 @@ head(c19_example, 5)
 
 ```r
 #library(ggplot2) # Make sure ggplot2 is loaded!
-ggplot(data = c19_grouped, aes(x = cdc_report_dt, y = number_of_cases))
+ggplot(data = c19_grouped,
+       aes(x = cdc_report_dt, y = number_of_cases))
 ```
 
-![](/home/runner/work/teacheR-extras/teacheR-extras/pages/data_analysis_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+![](data_analysis_files/figure-htmlunnamed-chunk-6-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -312,11 +313,12 @@ ggplot(data = c19_grouped, aes(x = cdc_report_dt, y = number_of_cases))
 
 
 ```r
-ggplot(data = c19_grouped, aes(x = cdc_report_dt, y = number_of_cases)) +
+ggplot(data = c19_grouped,
+       aes(x = cdc_report_dt, y = number_of_cases)) +
   geom_line()
 ```
 
-![](/home/runner/work/teacheR-extras/teacheR-extras/pages/data_analysis_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+![](data_analysis_files/figure-htmlunnamed-chunk-7-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -338,11 +340,12 @@ ggplot(data = c19_grouped, aes(x = cdc_report_dt, y = number_of_cases)) +
 
 
 ```r
-ggplot(data = c19_grouped, aes(x = cdc_report_dt, y = number_of_cases, colour = age_group)) +
+ggplot(data = c19_grouped,
+       aes(x = cdc_report_dt, y = number_of_cases, colour = age_group)) +
   geom_line()
 ```
 
-![](/home/runner/work/teacheR-extras/teacheR-extras/pages/data_analysis_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+![](data_analysis_files/figure-htmlunnamed-chunk-8-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -363,14 +366,15 @@ d use the `scale_x_date()` function:
 
 
 ```r
-ggplot(data = c19_grouped, aes(x = cdc_report_dt, y = number_of_cases, colour = age_group)) +
+ggplot(data = c19_grouped,
+       aes(x = cdc_report_dt, y = number_of_cases,colour = age_group)) +
   geom_line() +
   scale_x_date(name = "CDC Report Date") +
   scale_y_continuous(name = "Number of Cases") +
   scale_color_discrete(name = "Age Group")
 ```
 
-![](/home/runner/work/teacheR-extras/teacheR-extras/pages/data_analysis_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+![](data_analysis_files/figure-htmlunnamed-chunk-9-1.png)&lt;!-- --&gt;
 
 ---
 

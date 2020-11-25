@@ -61,14 +61,14 @@ jobs:
       - name: Copy .css file to the pages dir
         run: cp custom.css pages
           
-      # Deploys the files to GitHubPages
-      #- name: Deploy to GitHub Pages
-      #  uses: JamesIves/github-pages-deploy-action@3.7.1
-      #  with:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #    BRANCH: gh-pages # The branch the action should deploy to.
-      #    FOLDER: pages # The folder the action should deploy.
-      #    CLEAN: FALSE # Automatically remove deleted files from the deploy branch
+      # Still deploy to GitHub Pages as a backup
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: pages # The folder the action should deploy.
+          CLEAN: FALSE # Automatically remove deleted files from the deploy branch
 
       - name: Upload to S3
         uses: jakejarvis/s3-sync-action@v0.5.1

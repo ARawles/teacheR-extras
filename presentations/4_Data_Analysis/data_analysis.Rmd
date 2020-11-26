@@ -17,7 +17,8 @@ output:
 knitr::opts_chunk$set(
   fig.path = "data_analysis_files/figure-html/",
   fig.width = 7,
-  fig.height = 3
+  fig.height = 4,
+  fig.align='center'
 )
 knitr::opts_knit$set(
   base.url = "./",

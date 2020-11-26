@@ -19,9 +19,10 @@ knitr::opts_chunk$set(
   fig.width = 7,
   fig.height = 3
 )
-# knitr::opts_knit$set(
-#   base.url = "/"
-# )
+knitr::opts_knit$set(
+  base.url = "./",
+  base.dir = file.path(getwd(),"../../pages/")
+)
 library(dplyr, quietly = TRUE, warn.conflicts = FALSE)
 library(ggplot2, quietly = TRUE, warn.conflicts = FALSE)
 library(readr, quietly = TRUE, warn.conflicts = FALSE)
